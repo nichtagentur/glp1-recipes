@@ -14,6 +14,21 @@ const {
   calories, protein, carbs, fat, fiber,
   ingredients, instructions, tags
 } = frontmatter;
+
+const nutritionItems = [
+  { value: calories, unit: '', label: 'Calories' },
+  { value: protein, unit: 'g', label: 'Protein' },
+  { value: carbs, unit: 'g', label: 'Carbs' },
+  { value: fat, unit: 'g', label: 'Fat' },
+  { value: fiber, unit: 'g', label: 'Fiber' },
+];
+
+const timeItems = [
+  { label: 'Prep', value: prepTime },
+  { label: 'Cook', value: cookTime },
+  { label: 'Total', value: totalTime },
+  { label: 'Serves', value: servings },
+];
 ---
 
 <!doctype html>
@@ -33,110 +48,110 @@ const {
 <body class="min-h-screen flex flex-col">
   <Header />
   <main class="flex-1">
-    <!-- Hero Image -->
-    <div class="relative w-full h-[50vh] md:h-[60vh]">
+
+    <!-- Cinematic Hero -->
+    <div class="relative w-full h-[55vh] md:h-[70vh] overflow-hidden">
       <img
         src={`${base}/${image}`}
         alt={imageAlt}
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover animate-scale-in"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      <div class="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/40 to-transparent" />
+      <div class="absolute inset-0 bg-gradient-to-r from-midnight/30 to-transparent" />
+
+      <!-- Title overlay -->
+      <div class="absolute bottom-0 left-0 right-0 px-6 pb-12 md:pb-16 max-w-4xl mx-auto">
+        <nav class="text-[11px] text-cream-muted/60 tracking-widest uppercase mb-4 animate-fade-up delay-1">
+          <a href={base} class="hover:text-amber transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <a href={`${base}/category/${category}/`} class="hover:text-amber capitalize transition-colors">{category.replace('-', ' ')}</a>
+        </nav>
+        <h1 class="font-display text-4xl md:text-6xl font-bold text-cream leading-[1.1] mb-5 animate-fade-up delay-2">
+          {title}
+        </h1>
+        <p class="text-cream-muted text-lg font-light max-w-2xl animate-fade-up delay-3">{description}</p>
+      </div>
     </div>
 
     <!-- Recipe Content -->
-    <article class="max-w-3xl mx-auto px-4 -mt-20 relative z-10">
-      <!-- Title Card -->
-      <div class="bg-cream rounded-xl p-6 md:p-8 shadow-xl mb-8">
-        <nav class="text-sm text-warm-gray mb-3">
-          <a href={base} class="hover:text-olive">Home</a>
-          <span class="mx-1">/</span>
-          <a href={`${base}category/${category}/`} class="hover:text-olive capitalize">{category.replace('-', ' ')}</a>
-          <span class="mx-1">/</span>
-          <span class="text-warm-dark">{title}</span>
-        </nav>
+    <article class="max-w-4xl mx-auto px-6 py-12">
 
-        <h1 class="font-serif text-3xl md:text-4xl font-bold text-warm-dark mb-4">{title}</h1>
-        <p class="text-warm-gray text-lg mb-4">{description}</p>
-
-        <div class="flex flex-wrap items-center gap-4 mb-4">
-          <NutritionBadge calories={calories} protein={protein} />
-        </div>
-
-        <div class="flex flex-wrap gap-4 text-sm text-warm-gray">
-          <span>Prep: {prepTime}</span>
-          <span>Cook: {cookTime}</span>
-          <span>Total: {totalTime}</span>
-          <span>Servings: {servings}</span>
-        </div>
+      <!-- Time + Nutrition bar -->
+      <div class="flex flex-wrap items-center gap-6 pb-8 mb-10 border-b border-cream/[0.08] animate-fade-up delay-4">
+        {timeItems.map(item => (
+          <div class="text-center">
+            <div class="text-[10px] text-cream-muted/50 tracking-[0.15em] uppercase mb-1">{item.label}</div>
+            <div class="text-sm text-cream font-medium">{item.value}</div>
+          </div>
+        ))}
+        <div class="flex-1" />
+        <NutritionBadge calories={calories} protein={protein} />
       </div>
 
-      <!-- Nutrition Details -->
-      <div class="bg-cream rounded-xl p-6 shadow-md mb-8">
-        <h2 class="font-serif text-xl font-bold mb-4">Nutrition Per Serving</h2>
-        <div class="grid grid-cols-5 gap-4 text-center">
-          <div>
-            <div class="text-2xl font-bold text-olive">{calories}</div>
-            <div class="text-xs text-warm-gray">Calories</div>
+      <!-- Nutrition grid -->
+      <div class="grid grid-cols-5 gap-4 mb-14 animate-fade-up delay-5">
+        {nutritionItems.map((item, i) => (
+          <div class="text-center py-6 border border-cream/[0.06] rounded-sm bg-charcoal/50">
+            <div class={`font-display text-3xl font-bold ${i === 1 ? 'text-amber' : 'text-cream'}`}>
+              {item.value}<span class="text-lg">{item.unit}</span>
+            </div>
+            <div class="text-[10px] text-cream-muted/50 tracking-[0.15em] uppercase mt-1">{item.label}</div>
           </div>
-          <div>
-            <div class="text-2xl font-bold text-olive">{protein}g</div>
-            <div class="text-xs text-warm-gray">Protein</div>
-          </div>
-          <div>
-            <div class="text-2xl font-bold text-olive">{carbs}g</div>
-            <div class="text-xs text-warm-gray">Carbs</div>
-          </div>
-          <div>
-            <div class="text-2xl font-bold text-olive">{fat}g</div>
-            <div class="text-xs text-warm-gray">Fat</div>
-          </div>
-          <div>
-            <div class="text-2xl font-bold text-olive">{fiber}g</div>
-            <div class="text-xs text-warm-gray">Fiber</div>
-          </div>
+        ))}
+      </div>
+
+      <!-- Two-column layout: Ingredients + Instructions -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-14">
+
+        <!-- Ingredients -->
+        <div class="lg:col-span-4 animate-fade-up delay-5">
+          <h2 class="font-display text-2xl font-bold text-cream mb-6 flex items-center gap-3">
+            Ingredients
+            <span class="flex-1 h-px bg-cream/[0.08]"></span>
+          </h2>
+          <ul class="space-y-3">
+            {ingredients.map((item: string) => (
+              <li class="flex items-start gap-3 text-cream/80 font-light text-[15px] leading-relaxed">
+                <span class="w-1.5 h-1.5 mt-2 rounded-full bg-amber shrink-0"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
 
-      <!-- Ingredients -->
-      <div class="bg-cream rounded-xl p-6 shadow-md mb-8">
-        <h2 class="font-serif text-xl font-bold mb-4">Ingredients</h2>
-        <ul class="space-y-2">
-          {ingredients.map((item: string) => (
-            <li class="flex items-start gap-2">
-              <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <!-- Instructions -->
-      <div class="bg-cream rounded-xl p-6 shadow-md mb-8">
-        <h2 class="font-serif text-xl font-bold mb-4">Instructions</h2>
-        <ol class="space-y-4">
-          {instructions.map((step: string, i: number) => (
-            <li class="flex gap-4">
-              <span class="w-8 h-8 rounded-full bg-olive text-cream flex items-center justify-center text-sm font-bold shrink-0">
-                {i + 1}
-              </span>
-              <p class="pt-1">{step}</p>
-            </li>
-          ))}
-        </ol>
+        <!-- Instructions -->
+        <div class="lg:col-span-8 animate-fade-up delay-6">
+          <h2 class="font-display text-2xl font-bold text-cream mb-6 flex items-center gap-3">
+            Instructions
+            <span class="flex-1 h-px bg-cream/[0.08]"></span>
+          </h2>
+          <ol class="space-y-6">
+            {instructions.map((step: string, i: number) => (
+              <li class="flex gap-5 group">
+                <div class="shrink-0 w-10 h-10 rounded-full border border-amber/30 text-amber flex items-center justify-center text-sm font-display font-bold group-hover:bg-amber group-hover:text-midnight transition-all duration-300">
+                  {i + 1}
+                </div>
+                <p class="text-cream/80 font-light text-[15px] leading-relaxed pt-2">{step}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
 
       <!-- Tags -->
       {tags && tags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-8">
+        <div class="flex flex-wrap gap-2 mb-10 pt-8 border-t border-cream/[0.06]">
           {tags.map((tag: string) => (
-            <span class="bg-olive/10 text-olive text-xs px-3 py-1 rounded-full">#{tag}</span>
+            <span class="text-[11px] text-cream-muted/50 tracking-wider uppercase border border-cream/[0.06] px-3 py-1 hover:border-amber/30 hover:text-amber transition-all duration-300 cursor-default">
+              #{tag}
+            </span>
           ))}
         </div>
       )}
 
       <!-- Published date -->
-      <p class="text-sm text-warm-gray mb-8">
-        Published: {new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      <p class="text-[11px] text-cream-muted/30 tracking-widest uppercase">
+        Published {new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
     </article>
   </main>

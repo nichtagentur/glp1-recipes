@@ -3,90 +3,152 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import RecipeCard from '../components/RecipeCard.astro';
 import { getCollection } from 'astro:content';
 
-const recipes = await getCollection('recipes');
-const sorted = recipes.sort((a, b) =>
-  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
-);
-
+const allRecipes = await getCollection('recipes');
+const recipes = allRecipes.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+const featured = recipes[0];
+const rest = recipes.slice(1);
 const base = import.meta.env.BASE_URL;
-const categories = ['breakfast', 'lunch', 'dinner', 'snacks', 'meal-prep', 'smoothies', 'soups', 'side-dishes'];
+
+const categories = [
+  { name: 'Breakfast', slug: 'breakfast' },
+  { name: 'Lunch', slug: 'lunch' },
+  { name: 'Dinner', slug: 'dinner' },
+  { name: 'Snacks', slug: 'snacks' },
+  { name: 'Soups', slug: 'soups' },
+  { name: 'Smoothies', slug: 'smoothies' },
+  { name: 'Meal Prep', slug: 'meal-prep' },
+  { name: 'Sides', slug: 'side-dishes' },
+];
 ---
 
 <BaseLayout
-  title="High-Protein GLP-1 Recipes | Nourishing Meals for Your Journey"
-  description="Delicious, high-protein recipes designed for people on GLP-1 medications. Easy meals that maximize nutrition in smaller portions."
+  title="GLP-1 Recipes | High-Protein Meals for Your Journey"
+  description="Delicious high-protein, portion-controlled recipes designed for people on GLP-1 medications. 20-40g protein, 300-500 calories per meal."
 >
+
   <!-- Hero Section -->
-  <section class="relative bg-olive-dark text-cream overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-olive)_0%,_transparent_60%)] opacity-30"></div>
-    <div class="relative max-w-5xl mx-auto px-4 py-20 md:py-28 text-center">
-      <p class="text-terracotta-light font-sans text-sm font-semibold tracking-widest uppercase mb-4">Nourish Your Journey</p>
-      <h1 class="font-serif text-4xl md:text-6xl font-bold leading-tight mb-6">
-        High-Protein Recipes<br />for GLP-1 Success
-      </h1>
-      <p class="text-cream-dark text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-        Every bite counts when your appetite changes. Our recipes pack maximum protein and nutrition into satisfying, smaller portions -- crafted for life on GLP-1 medications.
-      </p>
-      <div class="flex flex-wrap justify-center gap-3">
-        {categories.map((cat) => (
-          <a
-            href={`${base}category/${cat}/`}
-            class="bg-cream/10 hover:bg-terracotta text-cream text-sm px-4 py-2 rounded-full transition-colors duration-200 capitalize"
-          >
-            {cat.replace('-', ' ')}
-          </a>
-        ))}
-      </div>
+  <section class="relative min-h-[85vh] flex items-center overflow-hidden">
+    <!-- Background gradient mesh -->
+    <div class="absolute inset-0">
+      <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-amber/[0.04] rounded-full blur-[120px]"></div>
+      <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-rose/[0.03] rounded-full blur-[100px]"></div>
     </div>
-  </section>
 
-  <!-- Recipe Grid -->
-  <section class="bg-cream-dark py-16">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="flex items-center justify-between mb-10">
-        <h2 class="font-serif text-2xl md:text-3xl font-bold text-warm-dark">All Recipes</h2>
-        <span class="text-warm-gray text-sm">{sorted.length} recipes</span>
-      </div>
+    <div class="relative max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <!-- Left: Text -->
+      <div class="max-w-xl">
+        <div class="animate-fade-up">
+          <span class="text-[11px] text-amber font-medium tracking-[0.25em] uppercase">Nourish Your Journey</span>
+        </div>
+        <h1 class="font-display text-5xl md:text-7xl font-bold text-cream leading-[1.05] mt-5 mb-6 animate-fade-up delay-1">
+          Recipes that
+          <span class="italic text-amber">satisfy,</span><br/>
+          not overwhelm.
+        </h1>
+        <p class="text-cream-muted text-lg font-light leading-relaxed mb-10 max-w-md animate-fade-up delay-2">
+          High-protein, portion-controlled meals designed for life on GLP-1 medications. Every recipe:
+          20-40g protein, 300-500 calories.
+        </p>
 
-      {sorted.length > 0 ? (
-        <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-          {sorted.map((recipe) => (
-            <div class="break-inside-avoid">
-              <RecipeCard
-                title={recipe.data.title}
-                slug={recipe.id}
-                image={recipe.data.image}
-                imageAlt={recipe.data.imageAlt}
-                category={recipe.data.category}
-                calories={recipe.data.calories}
-                protein={recipe.data.protein}
-                prepTime={recipe.data.prepTime}
-              />
-            </div>
+        <!-- Category pills -->
+        <div class="flex flex-wrap gap-2 animate-fade-up delay-3">
+          {categories.map(cat => (
+            <a
+              href={`${base}/category/${cat.slug}/`}
+              class="text-[11px] tracking-[0.1em] uppercase text-cream-muted border border-cream/[0.08] px-4 py-2 hover:border-amber/40 hover:text-amber transition-all duration-300"
+            >
+              {cat.name}
+            </a>
           ))}
         </div>
-      ) : (
-        <div class="text-center py-20">
-          <p class="font-serif text-2xl text-warm-gray mb-4">Recipes coming soon</p>
-          <p class="text-warm-gray">We are preparing delicious, high-protein recipes for your GLP-1 journey.</p>
+      </div>
+
+      <!-- Right: Featured recipe -->
+      {featured && (
+        <div class="animate-scale-in delay-3">
+          <a href={`${base}/recipes/${featured.id}/`} class="block group relative">
+            <div class="relative overflow-hidden rounded-sm aspect-[4/5]">
+              <img
+                src={`${base}/${featured.data.image}`}
+                alt={featured.data.imageAlt}
+                class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              <div class="absolute bottom-0 left-0 right-0 p-6">
+                <span class="text-[10px] text-amber tracking-[0.15em] uppercase font-medium mb-2 block">Featured</span>
+                <h2 class="font-display text-2xl md:text-3xl text-cream font-bold leading-tight group-hover:text-amber-light transition-colors duration-300">
+                  {featured.data.title}
+                </h2>
+                <div class="flex gap-3 mt-3 text-[11px] text-cream-muted/70 tracking-wider uppercase">
+                  <span>{featured.data.protein}g protein</span>
+                  <span class="text-cream/20">|</span>
+                  <span>{featured.data.calories} cal</span>
+                  <span class="text-cream/20">|</span>
+                  <span>{featured.data.prepTime}</span>
+                </div>
+              </div>
+            </div>
+            <div class="h-[2px] bg-amber/0 group-hover:bg-amber transition-all duration-500" />
+          </a>
         </div>
       )}
     </div>
   </section>
 
-  <!-- About Teaser -->
-  <section class="bg-cream py-16">
-    <div class="max-w-3xl mx-auto px-4 text-center">
-      <h2 class="font-serif text-2xl md:text-3xl font-bold text-warm-dark mb-4">Why These Recipes?</h2>
-      <p class="text-warm-gray text-lg leading-relaxed mb-6">
-        GLP-1 medications change how you experience hunger and fullness. When every meal matters more, you need recipes that deliver maximum nutrition in portions your body can handle. That is exactly what we build here -- high-protein, nutrient-dense meals that taste incredible.
+  <!-- Decorative divider -->
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex items-center gap-4 my-4">
+      <div class="flex-1 h-px bg-cream/[0.06]"></div>
+      <span class="text-[10px] text-cream-muted/30 tracking-[0.3em] uppercase">Latest Recipes</span>
+      <div class="flex-1 h-px bg-cream/[0.06]"></div>
+    </div>
+  </div>
+
+  <!-- Recipe Grid -->
+  <section class="max-w-7xl mx-auto px-6 py-16">
+    {rest.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {rest.map((recipe, i) => (
+          <div class={`animate-fade-up delay-${Math.min(i + 1, 7)}`}>
+            <RecipeCard
+              title={recipe.data.title}
+              slug={recipe.id}
+              image={recipe.data.image}
+              imageAlt={recipe.data.imageAlt}
+              category={recipe.data.category}
+              calories={recipe.data.calories}
+              protein={recipe.data.protein}
+              prepTime={recipe.data.prepTime}
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p class="text-center text-cream-muted/50 font-light text-lg py-20">
+        More recipes coming soon.
+      </p>
+    )}
+  </section>
+
+  <!-- About teaser -->
+  <section class="max-w-4xl mx-auto px-6 py-20 text-center">
+    <div class="border border-cream/[0.06] rounded-sm p-12 md:p-16 bg-charcoal/30">
+      <span class="text-[10px] text-amber tracking-[0.25em] uppercase font-medium">Our Mission</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-cream mt-4 mb-6">
+        Every bite should count
+      </h2>
+      <p class="text-cream-muted font-light leading-relaxed max-w-2xl mx-auto mb-8">
+        GLP-1 medications change how you experience hunger. When every meal matters,
+        you deserve recipes that deliver maximum nutrition in portions your body can handle &mdash;
+        high-protein, deeply satisfying, never boring.
       </p>
       <a
-        href={`${base}about/`}
-        class="inline-block bg-olive hover:bg-olive-dark text-cream font-semibold px-6 py-3 rounded-lg transition-colors duration-200"
+        href={`${base}/about/`}
+        class="inline-block text-[12px] tracking-[0.15em] uppercase text-amber border border-amber/40 px-8 py-3 hover:bg-amber hover:text-midnight transition-all duration-300"
       >
-        Learn About Our Approach
+        Learn More
       </a>
     </div>
   </section>
+
 </BaseLayout>

@@ -16,31 +16,40 @@ const { title, slug, image, imageAlt, category, calories, protein, prepTime } = 
 const base = import.meta.env.BASE_URL;
 ---
 
-<article class="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-warm-darker">
-  <a href={`${base}recipes/${slug}/`} class="block">
-    <div class="relative aspect-[4/3] overflow-hidden">
+<article class="group relative">
+  <a href={`${base}/recipes/${slug}/`} class="block">
+    <!-- Image container with ambient glow -->
+    <div class="relative overflow-hidden rounded-sm aspect-[3/4] md:aspect-[4/5]">
       <img
         src={`${base}/${image}`}
         alt={imageAlt}
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        class="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.04] group-hover:brightness-110"
         loading="lazy"
         decoding="async"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-      <div class="absolute top-3 left-3">
-        <span class="bg-terracotta text-cream text-xs font-medium px-2.5 py-1 rounded-full capitalize">
+      <!-- Dark overlay gradient -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-500" />
+
+      <!-- Category label -->
+      <div class="absolute top-4 left-4">
+        <span class="text-[10px] font-medium tracking-[0.15em] uppercase text-amber bg-midnight/60 backdrop-blur-sm px-2.5 py-1 border border-amber/20">
           {category.replace('-', ' ')}
         </span>
       </div>
-      <div class="absolute bottom-3 left-3 right-3">
-        <h3 class="font-serif text-lg text-cream font-bold leading-snug mb-2 drop-shadow-lg">
+
+      <!-- Content overlay -->
+      <div class="absolute bottom-0 left-0 right-0 p-5">
+        <h3 class="font-display text-xl md:text-2xl text-cream font-semibold leading-snug mb-3 group-hover:text-amber-light transition-colors duration-300">
           {title}
         </h3>
         <div class="flex items-center justify-between">
           <NutritionBadge calories={calories} protein={protein} compact />
-          <span class="text-cream/70 text-xs">{prepTime}</span>
+          <span class="text-cream-muted/60 text-[11px] tracking-wider uppercase">{prepTime}</span>
         </div>
       </div>
     </div>
+
+    <!-- Subtle amber line on hover -->
+    <div class="h-[2px] bg-amber/0 group-hover:bg-amber/60 transition-all duration-500 mt-0" />
   </a>
 </article>

@@ -8,29 +8,41 @@ const categories = [
   { name: 'Soups', slug: 'soups' },
   { name: 'Smoothies', slug: 'smoothies' },
   { name: 'Meal Prep', slug: 'meal-prep' },
-  { name: 'Side Dishes', slug: 'side-dishes' },
+  { name: 'Sides', slug: 'side-dishes' },
 ];
 ---
 
-<header class="bg-warm-darker/95 backdrop-blur-sm sticky top-0 z-50 border-b border-olive/20">
-  <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href={base} class="flex items-center gap-2 group">
-      <span class="text-2xl font-serif font-bold text-cream group-hover:text-terracotta-light transition-colors">
-        GLP-1 Recipes
+<header class="fixed top-0 w-full z-50 transition-all duration-500" id="site-header">
+  <div class="absolute inset-0 bg-midnight/80 backdrop-blur-md border-b border-cream/[0.06]"></div>
+  <nav class="relative max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href={base} class="group flex items-baseline gap-3">
+      <span class="font-display text-2xl font-bold text-cream tracking-wide group-hover:text-amber transition-colors duration-300">
+        GLP-1
+      </span>
+      <span class="font-display text-sm font-normal text-cream-muted italic tracking-widest uppercase">
+        Recipes
       </span>
     </a>
-    <div class="hidden md:flex items-center gap-1">
+
+    <div class="hidden lg:flex items-center gap-0.5">
       {categories.map(cat => (
         <a
-          href={`${base}category/${cat.slug}/`}
-          class="px-3 py-1.5 text-sm text-cream/80 hover:text-cream hover:bg-olive/30 rounded-md transition-all"
+          href={`${base}/category/${cat.slug}/`}
+          class="px-3 py-1.5 text-[13px] font-body font-light text-cream-muted hover:text-amber tracking-wide uppercase transition-colors duration-300"
         >
           {cat.name}
         </a>
       ))}
     </div>
-    <a href={`${base}about/`} class="text-sm text-cream/70 hover:text-cream transition-colors">
+
+    <a
+      href={`${base}/about/`}
+      class="text-[13px] font-light text-cream-muted hover:text-amber tracking-wide uppercase transition-colors duration-300"
+    >
       About
     </a>
   </nav>
 </header>
+
+<!-- Spacer for fixed header -->
+<div class="h-16"></div>

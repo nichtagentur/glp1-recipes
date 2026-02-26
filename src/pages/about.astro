@@ -5,130 +5,101 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout
-  title="About | GLP-1 Recipes - Our Mission & Editorial Process"
-  description="Learn about our mission to help GLP-1 medication users thrive with high-protein, nutrient-dense recipes backed by nutritional science."
+  title="About | GLP-1 Recipes"
+  description="Learn about our mission to help GLP-1 medication users thrive with high-protein, nutrient-dense recipes."
 >
-  <!-- Header -->
-  <section class="bg-olive-dark text-cream py-16">
-    <div class="max-w-3xl mx-auto px-4 text-center">
-      <h1 class="font-serif text-3xl md:text-5xl font-bold mb-4">About GLP-1 Recipes</h1>
-      <p class="text-cream-dark text-lg">Helping you nourish your body when every bite matters most.</p>
+  <!-- Hero -->
+  <section class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber/[0.03] rounded-full blur-[100px]"></div>
+    </div>
+    <div class="relative max-w-3xl mx-auto px-6 text-center">
+      <span class="text-[11px] text-amber tracking-[0.25em] uppercase font-medium animate-fade-up">Our Story</span>
+      <h1 class="font-display text-4xl md:text-6xl font-bold text-cream mt-4 animate-fade-up delay-1">
+        About GLP-1 Recipes
+      </h1>
+      <p class="text-cream-muted font-light text-lg mt-4 animate-fade-up delay-2">
+        Helping you nourish your body when every bite matters most.
+      </p>
     </div>
   </section>
 
-  <div class="max-w-3xl mx-auto px-4 py-16 space-y-12">
+  <div class="max-w-3xl mx-auto px-6 pb-20 space-y-16">
 
     <!-- Mission -->
-    <section>
-      <h2 class="font-serif text-2xl font-bold text-warm-dark mb-4 flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-olive text-cream flex items-center justify-center text-sm font-bold shrink-0">1</span>
+    <section class="animate-fade-up delay-3">
+      <h2 class="font-display text-2xl font-bold text-cream mb-6 flex items-center gap-3">
         Our Mission
+        <span class="flex-1 h-px bg-cream/[0.08]"></span>
       </h2>
-      <div class="bg-cream rounded-xl p-6 shadow-md">
-        <p class="text-warm-darker leading-relaxed mb-4">
-          GLP-1 receptor agonist medications -- including semaglutide (Ozempic, Wegovy) and tirzepatide (Mounjaro, Zepbound) -- have transformed weight management for millions of people. But reduced appetite brings a real challenge: <strong>how do you get enough protein and essential nutrients when you are eating significantly less?</strong>
+      <div class="space-y-4 text-cream/70 font-light leading-relaxed">
+        <p>
+          GLP-1 receptor agonist medications -- including semaglutide (Ozempic, Wegovy) and tirzepatide (Mounjaro, Zepbound) -- have transformed weight management for millions. But reduced appetite brings a real challenge: <strong class="text-cream font-medium">how do you get enough protein and essential nutrients when you're eating significantly less?</strong>
         </p>
-        <p class="text-warm-darker leading-relaxed mb-4">
-          That is the question we set out to answer. Every recipe on this site is designed to maximize nutritional value per calorie, with a focus on high protein content that helps preserve muscle mass during weight loss -- a critical concern identified by researchers studying GLP-1 therapies.
+        <p>
+          Every recipe on this site is designed to maximize nutritional value per calorie, with a focus on high protein content that helps preserve muscle mass during weight loss -- a critical concern identified by researchers studying GLP-1 therapies.
         </p>
-        <p class="text-warm-darker leading-relaxed">
-          We believe that eating well on GLP-1 medications should not mean sacrificing flavor, variety, or the joy of cooking. Our recipes are practical, satisfying, and built for real life.
+        <p>
+          We believe that eating well on GLP-1 medications should not mean sacrificing flavor, variety, or the joy of cooking.
         </p>
       </div>
     </section>
 
     <!-- Editorial Process -->
-    <section>
-      <h2 class="font-serif text-2xl font-bold text-warm-dark mb-4 flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-olive text-cream flex items-center justify-center text-sm font-bold shrink-0">2</span>
-        Our Editorial Process
+    <section class="animate-fade-up delay-4">
+      <h2 class="font-display text-2xl font-bold text-cream mb-6 flex items-center gap-3">
+        Editorial Process
+        <span class="flex-1 h-px bg-cream/[0.08]"></span>
       </h2>
-      <div class="bg-cream rounded-xl p-6 shadow-md">
-        <p class="text-warm-darker leading-relaxed mb-4">
-          Every recipe published on GLP-1 Recipes follows a rigorous development process:
-        </p>
-        <ul class="space-y-3 mb-4">
-          <li class="flex items-start gap-3">
-            <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
-            <span class="text-warm-darker"><strong>Nutritional targeting:</strong> Each recipe aims for high protein density (typically 25g+ per serving) with controlled calories, following guidance from clinical nutrition research on GLP-1 therapies.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
-            <span class="text-warm-darker"><strong>Macronutrient transparency:</strong> Full nutrition data (calories, protein, carbs, fat, fiber) is provided for every recipe so you can make informed choices.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
-            <span class="text-warm-darker"><strong>Practical portions:</strong> Serving sizes are designed with GLP-1 users in mind -- satisfying but not overwhelming when your appetite is reduced.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
-            <span class="text-warm-darker"><strong>Ingredient accessibility:</strong> We use common, affordable ingredients available at most grocery stores.</span>
-          </li>
-        </ul>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {[
+          { title: 'Nutritional Targeting', desc: 'Each recipe aims for 25g+ protein per serving with controlled calories, following clinical nutrition research.' },
+          { title: 'Macro Transparency', desc: 'Full nutrition data (calories, protein, carbs, fat, fiber) is provided for every recipe.' },
+          { title: 'Practical Portions', desc: 'Serving sizes designed for GLP-1 users -- satisfying but not overwhelming.' },
+          { title: 'Accessible Ingredients', desc: 'Common, affordable ingredients available at most grocery stores.' },
+        ].map(item => (
+          <div class="border border-cream/[0.06] p-5 rounded-sm">
+            <h3 class="text-amber text-sm font-medium mb-2">{item.title}</h3>
+            <p class="text-cream/60 text-sm font-light leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
       </div>
     </section>
 
     <!-- Trusted Sources -->
-    <section>
-      <h2 class="font-serif text-2xl font-bold text-warm-dark mb-4 flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-olive text-cream flex items-center justify-center text-sm font-bold shrink-0">3</span>
-        Our Trusted Sources
+    <section class="animate-fade-up delay-5">
+      <h2 class="font-display text-2xl font-bold text-cream mb-6 flex items-center gap-3">
+        Trusted Sources
+        <span class="flex-1 h-px bg-cream/[0.08]"></span>
       </h2>
-      <div class="bg-cream rounded-xl p-6 shadow-md">
-        <p class="text-warm-darker leading-relaxed mb-4">
-          Our nutritional guidelines and health information are informed by leading research institutions and regulatory bodies:
-        </p>
-        <div class="grid sm:grid-cols-2 gap-4">
+      <div class="grid sm:grid-cols-2 gap-4">
+        {[
+          { name: 'National Institutes of Health', url: 'https://www.nih.gov/', desc: 'Research on nutrition and GLP-1 therapies.' },
+          { name: 'U.S. FDA', url: 'https://www.fda.gov/', desc: 'Drug safety and dietary guidelines.' },
+          { name: 'NIDDK', url: 'https://www.niddk.nih.gov/', desc: 'Weight management research.' },
+          { name: 'Dietary Guidelines', url: 'https://www.dietaryguidelines.gov/', desc: 'Federal nutrition guidance.' },
+        ].map(item => (
           <a
-            href="https://www.nih.gov/"
+            href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="block bg-cream-dark rounded-lg p-4 hover:shadow-md transition-shadow"
+            class="block border border-cream/[0.06] p-5 rounded-sm hover:border-amber/30 transition-all duration-300 group"
           >
-            <p class="font-semibold text-olive mb-1">National Institutes of Health (NIH)</p>
-            <p class="text-warm-gray text-sm">Research on nutrition, protein requirements, and GLP-1 receptor agonist therapies.</p>
+            <p class="text-cream font-medium text-sm group-hover:text-amber transition-colors">{item.name}</p>
+            <p class="text-cream/40 text-xs font-light mt-1">{item.desc}</p>
           </a>
-          <a
-            href="https://www.fda.gov/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block bg-cream-dark rounded-lg p-4 hover:shadow-md transition-shadow"
-          >
-            <p class="font-semibold text-olive mb-1">U.S. Food & Drug Administration (FDA)</p>
-            <p class="text-warm-gray text-sm">Drug approvals, safety information, and dietary guidelines for GLP-1 medications.</p>
-          </a>
-          <a
-            href="https://www.niddk.nih.gov/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block bg-cream-dark rounded-lg p-4 hover:shadow-md transition-shadow"
-          >
-            <p class="font-semibold text-olive mb-1">NIDDK</p>
-            <p class="text-warm-gray text-sm">National Institute of Diabetes and Digestive and Kidney Diseases -- research on weight management.</p>
-          </a>
-          <a
-            href="https://www.dietaryguidelines.gov/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block bg-cream-dark rounded-lg p-4 hover:shadow-md transition-shadow"
-          >
-            <p class="font-semibold text-olive mb-1">Dietary Guidelines for Americans</p>
-            <p class="text-warm-gray text-sm">Federal nutrition guidance informing our macronutrient targets and meal planning.</p>
-          </a>
-        </div>
+        ))}
       </div>
     </section>
 
-    <!-- Contact -->
-    <section>
-      <div class="bg-olive/10 rounded-xl p-6 text-center">
-        <p class="text-warm-darker mb-2">
-          Have questions or recipe suggestions? We would love to hear from you.
-        </p>
-        <a href={`${base}disclaimer/`} class="text-olive font-semibold hover:text-olive-dark transition-colors">
-          Read our medical disclaimer before relying on any information on this site.
-        </a>
-      </div>
-    </section>
+    <!-- CTA -->
+    <div class="text-center pt-8 border-t border-cream/[0.06]">
+      <p class="text-cream/50 font-light text-sm mb-3">
+        Please read our medical disclaimer before relying on any information on this site.
+      </p>
+      <a href={`${base}/disclaimer/`} class="text-amber text-sm hover:text-amber-light transition-colors">
+        Read full disclaimer
+      </a>
+    </div>
   </div>
 </BaseLayout>

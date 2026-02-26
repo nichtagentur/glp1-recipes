@@ -9,13 +9,13 @@ const { calories, protein, compact = false } = Astro.props;
 ---
 
 {compact ? (
-  <div class="flex gap-2 text-xs font-medium">
-    <span class="bg-olive/90 text-cream px-2 py-0.5 rounded-full">{protein}g protein</span>
-    <span class="bg-warm-dark/80 text-cream px-2 py-0.5 rounded-full">{calories} cal</span>
+  <div class="flex gap-2">
+    <span class="text-[11px] font-medium tracking-wider uppercase text-amber border border-amber/30 px-2 py-0.5 rounded-sm">{protein}g protein</span>
+    <span class="text-[11px] font-medium tracking-wider uppercase text-cream-muted border border-cream/10 px-2 py-0.5 rounded-sm">{calories} cal</span>
   </div>
 ) : (
-  <div class="flex gap-3 text-sm font-medium">
-    <span class="bg-olive text-cream px-3 py-1 rounded-full">{protein}g protein</span>
-    <span class="bg-warm-dark/90 text-cream px-3 py-1 rounded-full">{calories} cal</span>
+  <div class="flex gap-3">
+    <span class="text-xs font-medium tracking-wider uppercase text-amber border border-amber/40 px-3 py-1.5 rounded-sm">{protein}g protein</span>
+    <span class="text-xs font-medium tracking-wider uppercase text-cream-muted border border-cream/15 px-3 py-1.5 rounded-sm">{calories} cal</span>
   </div>
 )}
