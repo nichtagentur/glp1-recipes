@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
@@ -189,11 +189,22 @@ async function generateOne() {
 
   // Generate image
   console.log('  Generating image...');
+  let imageOk = false;
   try {
     await generateImage(recipe);
-    console.log('  Image done.');
+    const imgPath = join(PROJECT_ROOT, 'public', recipe.image);
+    if (existsSync(imgPath)) {
+      imageOk = true;
+      console.log('  Image done.');
+    } else {
+      console.warn('  Image file not found after generation -- using placeholder.');
+    }
   } catch (err) {
-    console.warn(`  Image failed: ${err.message} -- continuing without image`);
+    console.warn(`  Image failed: ${err.message} -- using placeholder.`);
+  }
+  if (!imageOk) {
+    recipe.image = 'images/recipes/placeholder.webp';
+    recipe.imageAlt = `${recipe.title} - image coming soon`;
   }
 
   // Write markdown

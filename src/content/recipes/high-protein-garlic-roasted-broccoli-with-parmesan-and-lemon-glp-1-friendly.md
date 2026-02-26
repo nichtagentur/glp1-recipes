@@ -2,7 +2,7 @@
 title: "High-Protein Garlic Roasted Broccoli with Parmesan and Lemon (GLP-1 Friendly)"
 description: "Crispy garlic roasted broccoli with Parmesan and lemon — a high-fiber, protein-rich side dish perfect for GLP-1 medication support."
 pubDate: "2026-02-26"
-image: "images/recipes/high-protein-garlic-roasted-broccoli-with-parmesan-and-lemon-glp-1-friendly.webp"
+image: "images/recipes/placeholder.webp"
 imageAlt: "Crispy garlic roasted broccoli florets topped with shaved Parmesan and lemon zest on a white ceramic platter"
 category: "side-dishes"
 prepTime: "10 mins"
