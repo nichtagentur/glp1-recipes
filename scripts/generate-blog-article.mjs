@@ -1,9 +1,11 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 import { generateImage } from './generate-images.mjs';
+import { createTransport } from 'nodemailer';
+import { ImapFlow } from 'imapflow';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = join(__dirname, '..');
@@ -29,6 +31,137 @@ function saveJSON(path, data) {
 
 function slugify(title) {
   return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+// --- Email notification ---
+const smtpTransport = createTransport({
+  host: process.env.SMTP_HOST || 'mail.easyname.eu',
+  port: 587,
+  secure: false,
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+});
+
+async function sendNotification(recipe) {
+  const slug = recipe.slug;
+  const url = `https://nichtagentur.github.io/glp1-recipes/recipes/${slug}/`;
+  const body = [
+    `A new recipe just went live on the GLP-1 Recipes blog:`,
+    ``,
+    `  ${recipe.title}`,
+    `  Category: ${recipe.category}`,
+    `  ${recipe.calories} cal | ${recipe.protein}g protein | ${recipe.fiber}g fiber`,
+    ``,
+    `  ${url}`,
+    ``,
+    `If you want to remove this article, simply reply with "take it offline".`,
+    ``,
+    `[slug:${slug}]`,
+  ].join('\n');
+
+  try {
+    await smtpTransport.sendMail({
+      from: `"GLP-1 Recipes Bot" <${process.env.SMTP_USER}>`,
+      to: 'aichholzer@dolph.in',
+      subject: `New recipe published: ${recipe.title}`,
+      text: body,
+    });
+    console.log('  Notification email sent.');
+  } catch (err) {
+    console.warn(`  Email failed: ${err.message}`);
+  }
+}
+
+// --- Check inbox for "take it offline" replies ---
+const PROCESSED_FILE = join(SCRIPTS_DIR, 'processed-uids.json');
+
+function loadProcessedUIDs() {
+  try { return new Set(JSON.parse(readFileSync(PROCESSED_FILE, 'utf-8'))); } catch { return new Set(); }
+}
+
+function saveProcessedUIDs(uidSet) {
+  writeFileSync(PROCESSED_FILE, JSON.stringify([...uidSet]) + '\n', 'utf-8');
+}
+
+async function checkInbox() {
+  const imapCfg = {
+    host: process.env.SMTP_HOST || 'mail.easyname.eu',
+    port: 993,
+    secure: true,
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    logger: false,
+  };
+
+  const processed = loadProcessedUIDs();
+  let imapClient;
+  try {
+    imapClient = new ImapFlow(imapCfg);
+    await imapClient.connect();
+    const lock = await imapClient.getMailboxLock('INBOX');
+
+    try {
+      const msgs = imapClient.fetch(
+        { from: 'aichholzer@dolph.in' },
+        { source: true, uid: true },
+      );
+
+      for await (const msg of msgs) {
+        if (processed.has(msg.uid)) continue;
+
+        const raw = msg.source.toString();
+        const lower = raw.toLowerCase();
+
+        const hasTakedown = /take it offline|remove it|take it down/.test(lower);
+        if (!hasTakedown) {
+          processed.add(msg.uid);
+          continue;
+        }
+
+        const slugMatch = raw.match(/\[slug:([a-z0-9-]+)\]/);
+        if (!slugMatch) {
+          console.log('  Takedown request found but no slug -- skipping.');
+          processed.add(msg.uid);
+          continue;
+        }
+
+        const slug = slugMatch[1];
+        console.log(`  Takedown request for: ${slug}`);
+
+        const mdPath = join(RECIPES_DIR, `${slug}.md`);
+        const imgPath = join(PROJECT_ROOT, 'public', 'images', 'recipes', `${slug}.webp`);
+        const thumbPath = join(PROJECT_ROOT, 'public', 'images', 'recipes', `${slug}-thumb.webp`);
+
+        let removed = false;
+        for (const f of [mdPath, imgPath, thumbPath]) {
+          if (existsSync(f)) { unlinkSync(f); removed = true; }
+        }
+
+        if (removed) {
+          try {
+            const gitOpts = { cwd: PROJECT_ROOT, stdio: 'pipe' };
+            execSync('git add -A', gitOpts);
+            execSync(`git commit -m "Remove recipe: ${slug} (requested via email)"`, gitOpts);
+            execSync('git push', gitOpts);
+            console.log(`  Removed ${slug} and pushed.`);
+          } catch (gitErr) {
+            console.warn(`  Git push for removal failed: ${gitErr.message}`);
+          }
+        } else {
+          console.log(`  No files found for slug ${slug} -- already removed?`);
+        }
+
+        processed.add(msg.uid);
+      }
+    } finally {
+      lock.release();
+    }
+
+    await imapClient.logout();
+  } catch (err) {
+    console.warn(`  Inbox check failed: ${err.message}`);
+    try { await imapClient?.logout(); } catch {}
+  }
+
+  saveProcessedUIDs(processed);
 }
 
 function pickNextTopic(topics, generatedLog) {
@@ -238,6 +371,7 @@ async function generateOne() {
     execSync(`git commit -m "Add recipe: ${recipe.title}"`, gitOpts);
     execSync('git push', gitOpts);
     console.log('  Pushed to GitHub -- deploy will start automatically.');
+    await sendNotification(recipe);
   } catch (gitErr) {
     console.warn(`  Git push failed: ${gitErr.message} -- will retry next round`);
   }
@@ -262,6 +396,8 @@ if (mode === '--schedule') {
   async function tick() {
     count++;
     console.log(`\n--- Article ${count}/${TOTAL} ---`);
+    console.log('  Checking inbox for takedown requests...');
+    await checkInbox();
     try {
       const ok = await generateOne();
       if (!ok) {
@@ -284,7 +420,7 @@ if (mode === '--schedule') {
   tick();
 } else {
   // Single article mode
-  generateOne().catch((err) => {
+  checkInbox().then(() => generateOne()).catch((err) => {
     console.error('Error:', err.message);
     process.exit(1);
   });

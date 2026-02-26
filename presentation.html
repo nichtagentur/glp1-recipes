@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLP-1 Recipes -- Automated SEO Blog System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --midnight: #0D0D0D;
+  --charcoal: #1A1714;
+  --charcoal-light: #2A2520;
+  --smoke: #3D3630;
+  --amber: #D4A04A;
+  --amber-light: #E8C47A;
+  --cream: #F5EDE0;
+  --cream-muted: #C8B9A6;
+  --rose: #C45B4A;
+  --sage: #7A8B6F;
+  --blue: #5B8CC4;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--midnight);
+  color: var(--cream);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Slide system */
+.slide {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 60px;
+  position: relative;
+}
+
+.slide-inner {
+  max-width: 1100px;
+  width: 100%;
+}
+
+h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+.slide-number {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  opacity: 0.4;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber);
+  font-weight: 500;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, var(--amber), transparent);
+  margin: 40px 0;
+  opacity: 0.3;
+}
+
+/* Slide separator */
+.slide + .slide { border-top: 1px solid rgba(245, 237, 224, 0.04); }
+
+/* ---- Title Slide ---- */
+.title-slide h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 24px;
+}
+.title-slide h1 em {
+  color: var(--amber);
+  font-style: italic;
+}
+.title-slide .subtitle {
+  font-size: 20px;
+  color: var(--cream-muted);
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 600px;
+}
+.title-slide .meta {
+  margin-top: 48px;
+  display: flex;
+  gap: 32px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  opacity: 0.5;
+}
+
+/* ---- Content styles ---- */
+.big-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.stat-card {
+  border: 1px solid rgba(245, 237, 224, 0.06);
+  padding: 32px;
+  border-radius: 2px;
+  background: var(--charcoal);
+}
+
+.stat-card .value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--amber);
+  margin-bottom: 8px;
+}
+
+.stat-card .desc {
+  font-size: 13px;
+  color: var(--cream-muted);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* Flow diagram */
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.flow-step {
+  flex: 1;
+  min-width: 180px;
+  padding: 28px 24px;
+  border: 1px solid rgba(245, 237, 224, 0.06);
+  background: var(--charcoal);
+  position: relative;
+  text-align: center;
+}
+
+.flow-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 12px solid var(--amber);
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.flow-step .step-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.flow-step .step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+
+.flow-step .step-detail {
+  font-size: 12px;
+  color: var(--cream-muted);
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* Stack table */
+.stack-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+}
+
+.stack-table th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(245, 237, 224, 0.08);
+  font-weight: 500;
+}
+
+.stack-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--cream);
+  font-weight: 300;
+  border-bottom: 1px solid rgba(245, 237, 224, 0.03);
+}
+
+.stack-table td:first-child {
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.stack-table td code {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  background: var(--charcoal-light);
+  padding: 2px 8px;
+  border-radius: 2px;
+  color: var(--amber-light);
+}
+
+/* Code block */
+.code-block {
+  background: var(--charcoal);
+  border: 1px solid rgba(245, 237, 224, 0.06);
+  padding: 24px 28px;
+  margin: 24px 0;
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--cream-muted);
+  overflow-x: auto;
+  border-radius: 2px;
+}
+
+.code-block .comment { color: var(--smoke); }
+.code-block .keyword { color: var(--rose); }
+.code-block .string { color: var(--sage); }
+.code-block .fn { color: var(--amber); }
+.code-block .accent { color: var(--amber-light); }
+
+/* Two column */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.two-col-wide {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* List */
+.feature-list {
+  list-style: none;
+  margin-top: 24px;
+}
+
+.feature-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(245, 237, 224, 0.04);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--cream);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.feature-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--amber);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.feature-list li strong {
+  color: var(--amber-light);
+  font-weight: 500;
+}
+
+/* Architecture diagram */
+.arch-box {
+  border: 1px solid rgba(245, 237, 224, 0.08);
+  padding: 20px 24px;
+  margin: 8px 0;
+  background: var(--charcoal);
+  border-radius: 2px;
+}
+
+.arch-box.highlight {
+  border-color: var(--amber);
+  background: rgba(212, 160, 74, 0.05);
+}
+
+.arch-box .box-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+.arch-box .box-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.arch-box .box-detail {
+  font-size: 12px;
+  color: var(--cream-muted);
+  font-weight: 300;
+  margin-top: 4px;
+}
+
+.arrow-down {
+  text-align: center;
+  color: var(--amber);
+  opacity: 0.4;
+  font-size: 20px;
+  padding: 4px 0;
+}
+
+/* Nav dots */
+.nav-bar {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 100;
+}
+
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--smoke);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-dot:hover, .nav-dot.active {
+  background: var(--amber);
+  transform: scale(1.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slide { padding: 60px 24px; }
+  .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 32px; }
+  .flow { flex-direction: column; }
+  .flow-step:not(:last-child)::after { display: none; }
+  .nav-bar { display: none; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Print */
+@media print {
+  .slide { min-height: auto; page-break-after: always; padding: 40px; }
+  .nav-bar { display: none; }
+  body::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav dots -->
+<nav class="nav-bar" id="navDots"></nav>
+
+<!-- ==================== SLIDE 1: TITLE ==================== -->
+<section class="slide title-slide" id="slide-1">
+  <div class="slide-inner">
+    <span class="label">AI Workshop / February 2026</span>
+    <h1>Automated<br>SEO <em>Recipe</em> Blog</h1>
+    <p class="subtitle">
+      How we built a fully automated, AI-powered recipe blog that publishes
+      5 new articles daily -- with AI-generated text, images, and SEO optimization.
+    </p>
+    <div class="meta">
+      <span>GLP-1 Recipes</span>
+      <span>Claude Sonnet 4.6 + Gemini</span>
+      <span>~$5-10/month</span>
+    </div>
+  </div>
+  <span class="slide-number">01 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 2: THE OPPORTUNITY ==================== -->
+<section class="slide" id="slide-2">
+  <div class="slide-inner">
+    <span class="label">The Opportunity</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 16px;">368M+ annual searches.</h2>
+    <p style="font-size: 18px; color: var(--cream-muted); font-weight: 300; max-width: 700px; margin-bottom: 40px;">
+      ~1 in 12 Americans now use GLP-1 medications (Ozempic, Wegovy, Mounjaro).
+      They need specific dietary guidance -- high protein, small portions, easy to digest.
+      The content gap is massive.
+    </p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="value">1 in 12</div>
+        <div class="desc">Americans on GLP-1 medications, with rapid growth</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">20-40g</div>
+        <div class="desc">Protein per meal needed to preserve muscle mass during weight loss</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">300-500</div>
+        <div class="desc">Calorie target per meal -- small, nutrient-dense portions</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">507</div>
+        <div class="desc">Pre-curated recipe topics across 8 categories, ready for generation</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">02 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 3: TECH STACK ==================== -->
+<section class="slide" id="slide-3">
+  <div class="slide-inner">
+    <span class="label">Tech Stack</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 32px;">Simple tools, powerful results.</h2>
+    <table class="stack-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Technology</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Site Generator</td>
+          <td><code>Astro 5</code></td>
+          <td>Content collections with Zod validation, excellent SEO, fast static builds</td>
+        </tr>
+        <tr>
+          <td>Styling</td>
+          <td><code>Tailwind CSS v4</code></td>
+          <td>Rapid, beautiful design with custom theme tokens</td>
+        </tr>
+        <tr>
+          <td>AI Recipes</td>
+          <td><code>Claude Sonnet 4.6</code></td>
+          <td>High-quality writing, structured JSON output, SEO-optimized copy</td>
+        </tr>
+        <tr>
+          <td>AI Images</td>
+          <td><code>Gemini 2.5 Flash Image</code></td>
+          <td>Free-tier food photography generation, good visual quality</td>
+        </tr>
+        <tr>
+          <td>Hosting</td>
+          <td><code>GitHub Pages</code></td>
+          <td>Free, auto-deploys on push, global CDN</td>
+        </tr>
+        <tr>
+          <td>Automation</td>
+          <td><code>GitHub Actions</code></td>
+          <td>Free cron jobs for public repos, daily at 6:15 AM UTC</td>
+        </tr>
+        <tr>
+          <td>Images</td>
+          <td><code>Sharp &rarr; WebP</code></td>
+          <td>Best compression, universal browser support, 1200x800 + 400x400 thumbs</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="slide-number">03 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 4: ARCHITECTURE ==================== -->
+<section class="slide" id="slide-4">
+  <div class="slide-inner">
+    <span class="label">System Architecture</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 40px;">The daily pipeline.</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <span class="step-icon">&#9201;</span>
+        <div class="step-title">Cron Trigger</div>
+        <div class="step-detail">GitHub Actions fires daily at 6:15 AM UTC</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-icon">&#9997;</span>
+        <div class="step-title">Recipe Gen</div>
+        <div class="step-detail">Claude Sonnet 4.6 generates 5 structured JSON recipes</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-icon">&#128247;</span>
+        <div class="step-title">Image Gen</div>
+        <div class="step-detail">Gemini creates food photography, Sharp converts to WebP</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-icon">&#128196;</span>
+        <div class="step-title">Write Files</div>
+        <div class="step-detail">Markdown + YAML frontmatter written to content directory</div>
+      </div>
+      <div class="flow-step">
+        <span class="step-icon">&#128640;</span>
+        <div class="step-title">Deploy</div>
+        <div class="step-detail">Git commit, push, Astro builds, GitHub Pages deploys</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="two-col">
+      <div>
+        <h3 style="font-size: 20px; margin-bottom: 16px; color: var(--amber);">Zero human intervention</h3>
+        <p style="font-size: 14px; color: var(--cream-muted); font-weight: 300; line-height: 1.7;">
+          Once deployed, the system runs autonomously. The topic pool of 507 recipes
+          ensures over 100 days of unique content. Category rotation keeps the mix varied.
+          A generated-log.json prevents duplicates.
+        </p>
+      </div>
+      <div>
+        <h3 style="font-size: 20px; margin-bottom: 16px; color: var(--amber);">Graceful error handling</h3>
+        <p style="font-size: 14px; color: var(--cream-muted); font-weight: 300; line-height: 1.7;">
+          If Claude fails on one recipe, the batch continues with the remaining 4.
+          If Gemini fails on an image, the recipe still publishes without a photo.
+          No single failure stops the pipeline.
+        </p>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">04 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 5: RECIPE GENERATION ==================== -->
+<section class="slide" id="slide-5">
+  <div class="slide-inner">
+    <span class="label">Content Generation</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 32px;">Claude writes the recipes.</h2>
+    <div class="two-col-wide">
+      <div>
+        <div class="code-block">
+<span class="comment">// System prompt enforces nutritional targets</span>
+<span class="keyword">const</span> SYSTEM_PROMPT = <span class="string">`You are a professional
+nutritionist and recipe developer...
+
+Meals: <span class="accent">300-500 calories, 20-40g protein</span>
+Snacks: <span class="accent">100-200 calories, 8-15g protein</span>
+All recipes: <span class="accent">high fiber (5g+), easy to digest</span>
+
+Respond ONLY with valid JSON.`</span>
+
+<span class="comment">// Call Claude Sonnet 4.6</span>
+<span class="keyword">const</span> message = <span class="keyword">await</span> client.messages.<span class="fn">create</span>({
+  model: <span class="string">'claude-sonnet-4-6'</span>,
+  max_tokens: <span class="accent">2000</span>,
+  system: SYSTEM_PROMPT,
+  messages: [{ role: <span class="string">'user'</span>, content: prompt }]
+});
+
+<span class="comment">// Returns structured JSON with all fields</span>
+<span class="keyword">const</span> recipe = JSON.<span class="fn">parse</span>(message.content);
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 18px; margin-bottom: 20px;">Output per recipe:</h3>
+        <ul class="feature-list">
+          <li><strong>Title + description</strong> -- SEO optimized</li>
+          <li><strong>Full nutrition</strong> -- cal, protein, carbs, fat, fiber</li>
+          <li><strong>Ingredients</strong> -- precise measurements</li>
+          <li><strong>Instructions</strong> -- clear numbered steps</li>
+          <li><strong>Tags</strong> -- cuisine, diet, key ingredients</li>
+          <li><strong>Image prompt</strong> -- for Gemini photo generation</li>
+          <li><strong>Intro paragraph</strong> -- body text for the page</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">05 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 6: IMAGE GENERATION ==================== -->
+<section class="slide" id="slide-6">
+  <div class="slide-inner">
+    <span class="label">Image Generation</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 32px;">Gemini shoots the photos.</h2>
+    <div class="two-col">
+      <div>
+        <div class="code-block">
+<span class="comment">// Consistent food photography style</span>
+<span class="keyword">const</span> prompt = <span class="string">`Generate professional
+overhead food photography:
+<span class="accent">${recipe.imagePrompt}</span>
+
+Style: bright natural lighting,
+clean white ceramic plate,
+rustic wooden table,
+shallow depth of field,
+fresh herb garnish,
+editorial food magazine quality,
+appetizing vibrant colors,
+no text or watermarks.`</span>
+
+<span class="comment">// Gemini 2.5 Flash Image API</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="fn">fetch</span>(GEMINI_URL, {
+  body: JSON.<span class="fn">stringify</span>({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      responseModalities: [<span class="string">"TEXT"</span>, <span class="string">"IMAGE"</span>]
+    }
+  })
+});
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 18px; margin-bottom: 20px;">Image pipeline:</h3>
+        <div class="arch-box" style="margin-bottom: 12px;">
+          <div class="box-label">Step 1</div>
+          <div class="box-title">Gemini generates base64 image</div>
+          <div class="box-detail">From recipe's imagePrompt + style template</div>
+        </div>
+        <div class="arrow-down">&darr;</div>
+        <div class="arch-box" style="margin-bottom: 12px;">
+          <div class="box-label">Step 2</div>
+          <div class="box-title">Sharp converts to WebP</div>
+          <div class="box-detail">Quality 80, best compression ratio</div>
+        </div>
+        <div class="arrow-down">&darr;</div>
+        <div class="arch-box" style="margin-bottom: 12px;">
+          <div class="box-label">Step 3</div>
+          <div class="box-title">Two sizes generated</div>
+          <div class="box-detail">1200x800 hero + 400x400 thumbnail</div>
+        </div>
+        <div class="arrow-down">&darr;</div>
+        <div class="arch-box highlight">
+          <div class="box-label">Result</div>
+          <div class="box-title">Consistent visual brand</div>
+          <div class="box-detail">Same lighting, angle, and plate style across all recipes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">06 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 7: SEO ==================== -->
+<section class="slide" id="slide-7">
+  <div class="slide-inner">
+    <span class="label">SEO Implementation</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 32px;">Built for Google from day one.</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="font-size: 20px; color: var(--amber); margin-bottom: 20px;">Schema Markup (JSON-LD)</h3>
+        <ul class="feature-list">
+          <li><strong>Recipe schema</strong> -- name, image, author, times, nutrition, ingredients, instructions</li>
+          <li><strong>BreadcrumbList</strong> -- Home &rarr; Category &rarr; Recipe</li>
+          <li><strong>Nutrition info</strong> -- calories, protein, carbs, fat, fiber per serving</li>
+        </ul>
+        <h3 style="font-size: 20px; color: var(--amber); margin-bottom: 20px; margin-top: 32px;">Meta Tags</h3>
+        <ul class="feature-list">
+          <li><strong>Title tags</strong> -- 50-60 chars, keyword optimized</li>
+          <li><strong>Open Graph</strong> -- og:title, og:image (1200x800), og:url</li>
+          <li><strong>Twitter Card</strong> -- summary_large_image</li>
+          <li><strong>Canonical URLs</strong> -- on every page</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size: 20px; color: var(--amber); margin-bottom: 20px;">E-E-A-T / YMYL Compliance</h3>
+        <ul class="feature-list">
+          <li><strong>About page</strong> -- editorial mission, process, sources</li>
+          <li><strong>Disclaimer</strong> -- on every page footer + dedicated page</li>
+          <li><strong>No medical claims</strong> -- framed as nutrition info</li>
+          <li><strong>Authority links</strong> -- NIH, FDA, NIDDK</li>
+          <li><strong>Author attribution</strong> -- consistent across all content</li>
+        </ul>
+        <h3 style="font-size: 20px; color: var(--amber); margin-bottom: 20px; margin-top: 32px;">Site Structure</h3>
+        <ul class="feature-list">
+          <li><strong>8 categories</strong> -- breakfast through side dishes</li>
+          <li><strong>Auto sitemap</strong> -- via @astrojs/sitemap</li>
+          <li><strong>Zod validation</strong> -- catches malformed content at build</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">07 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 8: AUTOMATION ==================== -->
+<section class="slide" id="slide-8">
+  <div class="slide-inner">
+    <span class="label">GitHub Actions</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 32px;">Two workflows, full automation.</h2>
+    <div class="two-col">
+      <div>
+        <div class="arch-box highlight" style="margin-bottom: 24px;">
+          <div class="box-label">Workflow 1</div>
+          <div class="box-title" style="font-size: 20px;">generate.yml</div>
+          <div class="box-detail" style="margin-top: 8px;">Daily cron at 6:15 AM UTC + manual dispatch</div>
+        </div>
+        <div class="code-block" style="font-size: 12px;">
+<span class="keyword">on</span>:
+  <span class="fn">schedule</span>:
+    - cron: <span class="string">'15 6 * * *'</span>
+  <span class="fn">workflow_dispatch</span>:
+
+<span class="keyword">steps</span>:
+  - Checkout repo
+  - Setup Node 22
+  - npm ci
+  - <span class="accent">node scripts/generate-batch.mjs</span>
+    <span class="comment"># env: CLAUDE_API_KEY, GEMINI_API_KEY</span>
+  - git add + commit + push
+        </div>
+      </div>
+      <div>
+        <div class="arch-box" style="margin-bottom: 24px;">
+          <div class="box-label">Workflow 2</div>
+          <div class="box-title" style="font-size: 20px;">deploy.yml</div>
+          <div class="box-detail" style="margin-top: 8px;">Triggered on every push to main</div>
+        </div>
+        <div class="code-block" style="font-size: 12px;">
+<span class="keyword">on</span>:
+  <span class="fn">push</span>:
+    branches: [<span class="string">main</span>]
+
+<span class="keyword">steps</span>:
+  - Checkout repo
+  - <span class="accent">withastro/action@v3</span>
+    <span class="comment"># Builds the Astro site</span>
+  - <span class="accent">actions/deploy-pages@v4</span>
+    <span class="comment"># Deploys to GitHub Pages</span>
+        </div>
+        <div style="margin-top: 24px; padding: 20px; border: 1px solid rgba(245,237,224,0.06); border-radius: 2px;">
+          <p style="font-size: 13px; color: var(--cream-muted); font-weight: 300; line-height: 1.6;">
+            <strong style="color: var(--amber);">Chain reaction:</strong>
+            generate.yml pushes new content &rarr; triggers deploy.yml &rarr;
+            site rebuilds &rarr; new recipes live within minutes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">08 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 9: CONTENT VALIDATION ==================== -->
+<section class="slide" id="slide-9">
+  <div class="slide-inner">
+    <span class="label">Quality Control</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 32px;">Multiple safety nets.</h2>
+    <div class="stat-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="stat-card">
+        <div class="value" style="font-size: 28px;">Zod</div>
+        <div class="desc">
+          Content collection schema validates every recipe at build time.
+          Missing fields, wrong types, or out-of-range nutrition values
+          break the build before publishing.
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="font-size: 28px;">System Prompt</div>
+        <div class="desc">
+          Claude's system prompt enforces strict nutritional targets.
+          Meals must hit 300-500 cal, 20-40g protein. The AI cannot
+          deviate from the guidelines.
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="font-size: 28px;">Log</div>
+        <div class="desc">
+          generated-log.json tracks every recipe ever created.
+          Prevents duplicates across runs. Enables category rotation
+          for maximum topic variety.
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <h3 style="font-size: 22px; margin-bottom: 20px;">Data flow with validation</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-title">Topic Pool</div>
+        <div class="step-detail">507 curated ideas with category + keywords</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-title">Claude API</div>
+        <div class="step-detail">System prompt enforces nutrition targets</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-title">JSON Parse</div>
+        <div class="step-detail">Validates response is valid JSON</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-title">YAML Write</div>
+        <div class="step-detail">Frontmatter + body written to .md</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-title">Astro Build</div>
+        <div class="step-detail">Zod schema validates all fields</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">09 / 10</span>
+</section>
+
+<!-- ==================== SLIDE 10: ECONOMICS ==================== -->
+<section class="slide" id="slide-10">
+  <div class="slide-inner">
+    <span class="label">Economics &amp; Scale</span>
+    <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 40px;">~$5-10/month for 150 recipes.</h2>
+    <div class="two-col">
+      <div>
+        <div class="stat-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="stat-card">
+            <div class="value" style="font-size: 32px;">$0.03</div>
+            <div class="desc">Per recipe (Claude Sonnet 4.6, ~2K tokens output)</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" style="font-size: 32px;">~$0.01</div>
+            <div class="desc">Per image (Gemini 2.5 Flash, free tier generous)</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" style="font-size: 32px;">$0</div>
+            <div class="desc">Hosting (GitHub Pages, free for public repos)</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" style="font-size: 32px;">$0</div>
+            <div class="desc">CI/CD (GitHub Actions, free for public repos)</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 20px; color: var(--amber); margin-bottom: 20px;">Growth timeline</h3>
+        <ul class="feature-list">
+          <li><strong>Month 1</strong> -- 150 recipes, 8 categories established</li>
+          <li><strong>Month 3</strong> -- 450 recipes, long-tail keyword coverage</li>
+          <li><strong>Month 6</strong> -- 507 topics exhausted, expand pool or pause</li>
+          <li><strong>Ongoing</strong> -- Static site, zero maintenance cost</li>
+        </ul>
+        <div style="margin-top: 32px; padding: 20px; border: 1px solid var(--amber); border-radius: 2px; background: rgba(212,160,74,0.05);">
+          <p style="font-size: 14px; color: var(--cream); font-weight: 400; line-height: 1.6;">
+            <strong>Key insight:</strong> Once published, every recipe is a permanent
+            SEO asset. The cost is front-loaded; the traffic compounds over time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-number">10 / 10</span>
+</section>
+
+<script>
+// Build nav dots
+const slides = document.querySelectorAll('.slide');
+const navDots = document.getElementById('navDots');
+slides.forEach((slide, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'nav-dot';
+  dot.title = `Slide ${i + 1}`;
+  dot.addEventListener('click', () => {
+    slide.scrollIntoView({ behavior: 'smooth' });
+  });
+  navDots.appendChild(dot);
+});
+
+// Highlight active dot on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const idx = Array.from(slides).indexOf(entry.target);
+      document.querySelectorAll('.nav-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === idx);
+      });
+    }
+  });
+}, { threshold: 0.5 });
+
+slides.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
