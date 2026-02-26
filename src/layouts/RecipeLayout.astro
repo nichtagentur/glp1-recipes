@@ -1,0 +1,145 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SEOHead from '../components/SEOHead.astro';
+import NutritionBadge from '../components/NutritionBadge.astro';
+import RecipeSchema from '../components/RecipeSchema.astro';
+
+const { frontmatter, slug } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const {
+  title, description, image, imageAlt, pubDate, category,
+  prepTime, cookTime, totalTime, servings,
+  calories, protein, carbs, fat, fiber,
+  ingredients, instructions, tags
+} = frontmatter;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <SEOHead title={title} description={description} image={image} type="article" />
+  <RecipeSchema
+    title={title} description={description} image={image}
+    pubDate={pubDate} prepTime={prepTime} cookTime={cookTime}
+    totalTime={totalTime} servings={servings}
+    calories={calories} protein={protein} carbs={carbs}
+    fat={fat} fiber={fiber}
+    ingredients={ingredients} instructions={instructions}
+    category={category} slug={slug}
+  />
+</head>
+<body class="min-h-screen flex flex-col">
+  <Header />
+  <main class="flex-1">
+    <!-- Hero Image -->
+    <div class="relative w-full h-[50vh] md:h-[60vh]">
+      <img
+        src={`${base}${image}`}
+        alt={imageAlt}
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+    </div>
+
+    <!-- Recipe Content -->
+    <article class="max-w-3xl mx-auto px-4 -mt-20 relative z-10">
+      <!-- Title Card -->
+      <div class="bg-cream rounded-xl p-6 md:p-8 shadow-xl mb-8">
+        <nav class="text-sm text-warm-gray mb-3">
+          <a href={base} class="hover:text-olive">Home</a>
+          <span class="mx-1">/</span>
+          <a href={`${base}category/${category}/`} class="hover:text-olive capitalize">{category.replace('-', ' ')}</a>
+          <span class="mx-1">/</span>
+          <span class="text-warm-dark">{title}</span>
+        </nav>
+
+        <h1 class="font-serif text-3xl md:text-4xl font-bold text-warm-dark mb-4">{title}</h1>
+        <p class="text-warm-gray text-lg mb-4">{description}</p>
+
+        <div class="flex flex-wrap items-center gap-4 mb-4">
+          <NutritionBadge calories={calories} protein={protein} />
+        </div>
+
+        <div class="flex flex-wrap gap-4 text-sm text-warm-gray">
+          <span>Prep: {prepTime}</span>
+          <span>Cook: {cookTime}</span>
+          <span>Total: {totalTime}</span>
+          <span>Servings: {servings}</span>
+        </div>
+      </div>
+
+      <!-- Nutrition Details -->
+      <div class="bg-cream rounded-xl p-6 shadow-md mb-8">
+        <h2 class="font-serif text-xl font-bold mb-4">Nutrition Per Serving</h2>
+        <div class="grid grid-cols-5 gap-4 text-center">
+          <div>
+            <div class="text-2xl font-bold text-olive">{calories}</div>
+            <div class="text-xs text-warm-gray">Calories</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-olive">{protein}g</div>
+            <div class="text-xs text-warm-gray">Protein</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-olive">{carbs}g</div>
+            <div class="text-xs text-warm-gray">Carbs</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-olive">{fat}g</div>
+            <div class="text-xs text-warm-gray">Fat</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-olive">{fiber}g</div>
+            <div class="text-xs text-warm-gray">Fiber</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ingredients -->
+      <div class="bg-cream rounded-xl p-6 shadow-md mb-8">
+        <h2 class="font-serif text-xl font-bold mb-4">Ingredients</h2>
+        <ul class="space-y-2">
+          {ingredients.map((item: string) => (
+            <li class="flex items-start gap-2">
+              <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Instructions -->
+      <div class="bg-cream rounded-xl p-6 shadow-md mb-8">
+        <h2 class="font-serif text-xl font-bold mb-4">Instructions</h2>
+        <ol class="space-y-4">
+          {instructions.map((step: string, i: number) => (
+            <li class="flex gap-4">
+              <span class="w-8 h-8 rounded-full bg-olive text-cream flex items-center justify-center text-sm font-bold shrink-0">
+                {i + 1}
+              </span>
+              <p class="pt-1">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <!-- Tags -->
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-8">
+          {tags.map((tag: string) => (
+            <span class="bg-olive/10 text-olive text-xs px-3 py-1 rounded-full">#{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <!-- Published date -->
+      <p class="text-sm text-warm-gray mb-8">
+        Published: {new Date(pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </p>
+    </article>
+  </main>
+  <Footer />
+</body>
+</html>

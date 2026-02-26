@@ -1,17 +1,92 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RecipeCard from '../components/RecipeCard.astro';
+import { getCollection } from 'astro:content';
 
+const recipes = await getCollection('recipes');
+const sorted = recipes.sort((a, b) =>
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+
+const base = import.meta.env.BASE_URL;
+const categories = ['breakfast', 'lunch', 'dinner', 'snacks', 'meal-prep', 'smoothies', 'soups', 'side-dishes'];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="High-Protein GLP-1 Recipes | Nourishing Meals for Your Journey"
+  description="Delicious, high-protein recipes designed for people on GLP-1 medications. Easy meals that maximize nutrition in smaller portions."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-olive-dark text-cream overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-olive)_0%,_transparent_60%)] opacity-30"></div>
+    <div class="relative max-w-5xl mx-auto px-4 py-20 md:py-28 text-center">
+      <p class="text-terracotta-light font-sans text-sm font-semibold tracking-widest uppercase mb-4">Nourish Your Journey</p>
+      <h1 class="font-serif text-4xl md:text-6xl font-bold leading-tight mb-6">
+        High-Protein Recipes<br />for GLP-1 Success
+      </h1>
+      <p class="text-cream-dark text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+        Every bite counts when your appetite changes. Our recipes pack maximum protein and nutrition into satisfying, smaller portions -- crafted for life on GLP-1 medications.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        {categories.map((cat) => (
+          <a
+            href={`${base}category/${cat}/`}
+            class="bg-cream/10 hover:bg-terracotta text-cream text-sm px-4 py-2 rounded-full transition-colors duration-200 capitalize"
+          >
+            {cat.replace('-', ' ')}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Recipe Grid -->
+  <section class="bg-cream-dark py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between mb-10">
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-warm-dark">All Recipes</h2>
+        <span class="text-warm-gray text-sm">{sorted.length} recipes</span>
+      </div>
+
+      {sorted.length > 0 ? (
+        <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+          {sorted.map((recipe) => (
+            <div class="break-inside-avoid">
+              <RecipeCard
+                title={recipe.data.title}
+                slug={recipe.id}
+                image={recipe.data.image}
+                imageAlt={recipe.data.imageAlt}
+                category={recipe.data.category}
+                calories={recipe.data.calories}
+                protein={recipe.data.protein}
+                prepTime={recipe.data.prepTime}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="font-serif text-2xl text-warm-gray mb-4">Recipes coming soon</p>
+          <p class="text-warm-gray">We are preparing delicious, high-protein recipes for your GLP-1 journey.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- About Teaser -->
+  <section class="bg-cream py-16">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h2 class="font-serif text-2xl md:text-3xl font-bold text-warm-dark mb-4">Why These Recipes?</h2>
+      <p class="text-warm-gray text-lg leading-relaxed mb-6">
+        GLP-1 medications change how you experience hunger and fullness. When every meal matters more, you need recipes that deliver maximum nutrition in portions your body can handle. That is exactly what we build here -- high-protein, nutrient-dense meals that taste incredible.
+      </p>
+      <a
+        href={`${base}about/`}
+        class="inline-block bg-olive hover:bg-olive-dark text-cream font-semibold px-6 py-3 rounded-lg transition-colors duration-200"
+      >
+        Learn About Our Approach
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allCategories = [
+    'breakfast', 'lunch', 'dinner', 'snacks',
+    'meal-prep', 'smoothies', 'soups', 'side-dishes'
+  ];
+
+  const recipes = await getCollection('recipes');
+
+  return allCategories.map((category) => ({
+    params: { category },
+    props: {
+      category,
+      recipes: recipes
+        .filter((r) => r.data.category === category)
+        .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()),
+    },
+  }));
+}
+
+const { category, recipes } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const displayName = category.replace('-', ' ');
+
+const allCategories = [
+  'breakfast', 'lunch', 'dinner', 'snacks',
+  'meal-prep', 'smoothies', 'soups', 'side-dishes'
+];
+---
+
+<BaseLayout
+  title={`GLP-1 ${displayName.charAt(0).toUpperCase() + displayName.slice(1)} Recipes | High-Protein Meals`}
+  description={`High-protein ${displayName} recipes designed for people on GLP-1 medications. Nutrient-dense meals that maximize every bite.`}
+>
+  <!-- Category Header -->
+  <section class="bg-olive-dark text-cream py-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <nav class="text-sm text-cream-dark mb-4">
+        <a href={base} class="hover:text-terracotta-light transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <span class="capitalize">{displayName}</span>
+      </nav>
+      <h1 class="font-serif text-3xl md:text-5xl font-bold capitalize mb-4">
+        GLP-1 {displayName} Recipes
+      </h1>
+      <p class="text-cream-dark text-lg max-w-2xl">
+        {recipes.length} high-protein {displayName} recipes crafted for maximum nutrition on your GLP-1 journey.
+      </p>
+    </div>
+  </section>
+
+  <!-- Category Navigation -->
+  <section class="bg-cream border-b border-warm-gray/20">
+    <div class="max-w-5xl mx-auto px-4 py-4">
+      <div class="flex flex-wrap gap-2">
+        {allCategories.map((cat) => (
+          <a
+            href={`${base}category/${cat}/`}
+            class:list={[
+              'text-sm px-4 py-2 rounded-full transition-colors duration-200 capitalize',
+              cat === category
+                ? 'bg-olive text-cream font-semibold'
+                : 'bg-cream-dark text-warm-gray hover:bg-olive/10 hover:text-olive'
+            ]}
+          >
+            {cat.replace('-', ' ')}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Recipe Grid -->
+  <section class="bg-cream-dark py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      {recipes.length > 0 ? (
+        <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+          {recipes.map((recipe) => (
+            <div class="break-inside-avoid">
+              <RecipeCard
+                title={recipe.data.title}
+                slug={recipe.id}
+                image={recipe.data.image}
+                imageAlt={recipe.data.imageAlt}
+                category={recipe.data.category}
+                calories={recipe.data.calories}
+                protein={recipe.data.protein}
+                prepTime={recipe.data.prepTime}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="font-serif text-2xl text-warm-gray mb-4">No {displayName} recipes yet</p>
+          <p class="text-warm-gray mb-8">We are working on delicious {displayName} recipes for your GLP-1 journey.</p>
+          <a
+            href={base}
+            class="inline-block bg-olive hover:bg-olive-dark text-cream font-semibold px-6 py-3 rounded-lg transition-colors duration-200"
+          >
+            Browse All Recipes
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

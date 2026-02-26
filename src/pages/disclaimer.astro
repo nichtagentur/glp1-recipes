@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="Medical Disclaimer | GLP-1 Recipes"
+  description="Important medical disclaimer regarding the nutritional information and recipes on GLP-1 Recipes. This site does not provide medical advice."
+>
+  <!-- Header -->
+  <section class="bg-warm-darker text-cream py-16">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h1 class="font-serif text-3xl md:text-5xl font-bold mb-4">Medical Disclaimer</h1>
+      <p class="text-cream-dark text-lg">Please read this important information carefully.</p>
+    </div>
+  </section>
+
+  <div class="max-w-3xl mx-auto px-4 py-16 space-y-8">
+
+    <!-- Primary Disclaimer -->
+    <div class="bg-terracotta/10 border-l-4 border-terracotta rounded-r-xl p-6">
+      <h2 class="font-serif text-xl font-bold text-warm-dark mb-3">This Website Does Not Provide Medical Advice</h2>
+      <p class="text-warm-darker leading-relaxed">
+        The information provided on GLP-1 Recipes, including recipes, nutritional data, and general health information, is for <strong>informational and educational purposes only</strong>. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician, registered dietitian, or other qualified health provider with any questions you may have regarding a medical condition, medication, or dietary changes.
+      </p>
+    </div>
+
+    <!-- GLP-1 Medication Notice -->
+    <div class="bg-cream rounded-xl p-6 shadow-md">
+      <h2 class="font-serif text-xl font-bold text-warm-dark mb-3">Regarding GLP-1 Medications</h2>
+      <p class="text-warm-darker leading-relaxed mb-4">
+        GLP-1 receptor agonist medications (including semaglutide, tirzepatide, and others) are prescription medications that should only be used under the direct supervision of a licensed healthcare provider. This website:
+      </p>
+      <ul class="space-y-3">
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
+          <span class="text-warm-darker"><strong>Makes no claims</strong> about the efficacy, safety, or suitability of any GLP-1 medication for any individual.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
+          <span class="text-warm-darker"><strong>Does not recommend</strong> starting, stopping, or changing the dosage of any medication.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
+          <span class="text-warm-darker"><strong>Does not endorse</strong> any specific medication, brand, or pharmaceutical company.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-terracotta shrink-0"></span>
+          <span class="text-warm-darker"><strong>Is not affiliated with</strong> any pharmaceutical manufacturer or healthcare organization.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Nutritional Information -->
+    <div class="bg-cream rounded-xl p-6 shadow-md">
+      <h2 class="font-serif text-xl font-bold text-warm-dark mb-3">Nutritional Information Accuracy</h2>
+      <p class="text-warm-darker leading-relaxed mb-4">
+        Nutritional values provided for our recipes are <strong>estimates only</strong>. Actual nutritional content may vary based on:
+      </p>
+      <ul class="space-y-2 text-warm-darker">
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Specific brands and varieties of ingredients used</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Variations in ingredient sizes and measurements</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Cooking methods and preparation techniques</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Substitutions or modifications to recipes</span>
+        </li>
+      </ul>
+      <p class="text-warm-darker leading-relaxed mt-4">
+        If you have specific dietary requirements or restrictions related to your medication or health conditions, consult with a registered dietitian or your prescribing physician.
+      </p>
+    </div>
+
+    <!-- Consult Your Provider -->
+    <div class="bg-cream rounded-xl p-6 shadow-md">
+      <h2 class="font-serif text-xl font-bold text-warm-dark mb-3">Consult Your Healthcare Provider</h2>
+      <p class="text-warm-darker leading-relaxed mb-4">
+        You should consult your healthcare provider before:
+      </p>
+      <ul class="space-y-2 text-warm-darker">
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Making any significant changes to your diet while on GLP-1 medications</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Following a high-protein or restricted-calorie eating plan</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Addressing any side effects related to food, appetite, or digestion</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-2 h-2 mt-2 rounded-full bg-olive shrink-0"></span>
+          <span>Managing any pre-existing conditions alongside GLP-1 therapy</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Allergies & Intolerances -->
+    <div class="bg-cream rounded-xl p-6 shadow-md">
+      <h2 class="font-serif text-xl font-bold text-warm-dark mb-3">Allergies & Food Intolerances</h2>
+      <p class="text-warm-darker leading-relaxed">
+        Our recipes may contain common allergens including but not limited to dairy, eggs, gluten, nuts, soy, and shellfish. Always review ingredient lists carefully and make substitutions as needed. If you have food allergies or intolerances, consult a healthcare professional before trying new recipes.
+      </p>
+    </div>
+
+    <!-- Limitation of Liability -->
+    <div class="bg-cream rounded-xl p-6 shadow-md">
+      <h2 class="font-serif text-xl font-bold text-warm-dark mb-3">Limitation of Liability</h2>
+      <p class="text-warm-darker leading-relaxed">
+        GLP-1 Recipes and its authors shall not be held liable for any adverse effects, injury, or damages resulting from the use or application of information, recipes, or suggestions found on this website. Use of this site constitutes acceptance of this disclaimer.
+      </p>
+    </div>
+
+    <!-- Last updated + links -->
+    <div class="bg-olive/10 rounded-xl p-6 text-center">
+      <p class="text-warm-gray text-sm mb-4">Last updated: February 2026</p>
+      <div class="flex justify-center gap-6">
+        <a href={base} class="text-olive font-semibold hover:text-olive-dark transition-colors">
+          Back to Recipes
+        </a>
+        <a href={`${base}about/`} class="text-olive font-semibold hover:text-olive-dark transition-colors">
+          About Us
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

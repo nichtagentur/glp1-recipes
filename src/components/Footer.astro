@@ -1,0 +1,49 @@
+---
+const base = import.meta.env.BASE_URL;
+const year = new Date().getFullYear();
+const categories = [
+  'breakfast', 'lunch', 'dinner', 'snacks',
+  'soups', 'smoothies', 'meal-prep', 'side-dishes'
+];
+---
+
+<footer class="bg-warm-darker text-cream/70 mt-16">
+  <div class="bg-terracotta/90 text-cream text-center py-3 px-4 text-sm">
+    <strong>Medical Disclaimer:</strong> This site provides nutrition information only, not medical advice.
+    Always consult your healthcare provider about dietary changes.
+    <a href={`${base}disclaimer/`} class="underline ml-1 hover:text-cream">Read full disclaimer</a>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div>
+      <h3 class="font-serif text-lg text-cream mb-3">GLP-1 Recipes</h3>
+      <p class="text-sm leading-relaxed">
+        High-protein, portion-controlled recipes designed for people on GLP-1 medications.
+        Every recipe: 20-40g protein, 300-500 calories.
+      </p>
+    </div>
+    <div>
+      <h3 class="font-serif text-lg text-cream mb-3">Categories</h3>
+      <div class="grid grid-cols-2 gap-1">
+        {categories.map(cat => (
+          <a
+            href={`${base}category/${cat}/`}
+            class="text-sm capitalize hover:text-cream transition-colors"
+          >
+            {cat.replace('-', ' ')}
+          </a>
+        ))}
+      </div>
+    </div>
+    <div>
+      <h3 class="font-serif text-lg text-cream mb-3">Resources</h3>
+      <div class="flex flex-col gap-1">
+        <a href={`${base}about/`} class="text-sm hover:text-cream transition-colors">About Us</a>
+        <a href={`${base}disclaimer/`} class="text-sm hover:text-cream transition-colors">Medical Disclaimer</a>
+        <a href="https://www.niddk.nih.gov/" rel="noopener" target="_blank" class="text-sm hover:text-cream transition-colors">NIH Resources</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-cream/10 text-center py-4 text-xs text-cream/40">
+    &copy; {year} GLP-1 Recipes. For informational purposes only.
+  </div>
+</footer>

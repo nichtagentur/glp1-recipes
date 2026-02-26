@@ -1,0 +1,21 @@
+---
+interface Props {
+  calories: number;
+  protein: number;
+  compact?: boolean;
+}
+
+const { calories, protein, compact = false } = Astro.props;
+---
+
+{compact ? (
+  <div class="flex gap-2 text-xs font-medium">
+    <span class="bg-olive/90 text-cream px-2 py-0.5 rounded-full">{protein}g protein</span>
+    <span class="bg-warm-dark/80 text-cream px-2 py-0.5 rounded-full">{calories} cal</span>
+  </div>
+) : (
+  <div class="flex gap-3 text-sm font-medium">
+    <span class="bg-olive text-cream px-3 py-1 rounded-full">{protein}g protein</span>
+    <span class="bg-warm-dark/90 text-cream px-3 py-1 rounded-full">{calories} cal</span>
+  </div>
+)}

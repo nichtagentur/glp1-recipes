@@ -1,0 +1,46 @@
+---
+import NutritionBadge from './NutritionBadge.astro';
+
+interface Props {
+  title: string;
+  slug: string;
+  image: string;
+  imageAlt: string;
+  category: string;
+  calories: number;
+  protein: number;
+  prepTime: string;
+}
+
+const { title, slug, image, imageAlt, category, calories, protein, prepTime } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<article class="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-warm-darker">
+  <a href={`${base}recipes/${slug}/`} class="block">
+    <div class="relative aspect-[4/3] overflow-hidden">
+      <img
+        src={`${base}${image}`}
+        alt={imageAlt}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      <div class="absolute top-3 left-3">
+        <span class="bg-terracotta text-cream text-xs font-medium px-2.5 py-1 rounded-full capitalize">
+          {category.replace('-', ' ')}
+        </span>
+      </div>
+      <div class="absolute bottom-3 left-3 right-3">
+        <h3 class="font-serif text-lg text-cream font-bold leading-snug mb-2 drop-shadow-lg">
+          {title}
+        </h3>
+        <div class="flex items-center justify-between">
+          <NutritionBadge calories={calories} protein={protein} compact />
+          <span class="text-cream/70 text-xs">{prepTime}</span>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>

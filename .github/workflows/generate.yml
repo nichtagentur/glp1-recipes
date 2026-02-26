@@ -1,0 +1,39 @@
+name: Generate Daily Recipes
+
+on:
+  schedule:
+    - cron: '15 6 * * *'  # 6:15 AM UTC daily
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate 5 recipes + images
+        env:
+          CLAUDE_API_KEY_1: ${{ secrets.CLAUDE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/generate-batch.mjs
+
+      - name: Commit and push new recipes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/recipes/ public/images/recipes/ scripts/generated-log.json
+          DATE=$(date +%Y-%m-%d)
+          git diff --staged --quiet || git commit -m "Add daily recipes ${DATE}"
+          git push

@@ -1,0 +1,36 @@
+---
+const base = import.meta.env.BASE_URL;
+const categories = [
+  { name: 'Breakfast', slug: 'breakfast' },
+  { name: 'Lunch', slug: 'lunch' },
+  { name: 'Dinner', slug: 'dinner' },
+  { name: 'Snacks', slug: 'snacks' },
+  { name: 'Soups', slug: 'soups' },
+  { name: 'Smoothies', slug: 'smoothies' },
+  { name: 'Meal Prep', slug: 'meal-prep' },
+  { name: 'Side Dishes', slug: 'side-dishes' },
+];
+---
+
+<header class="bg-warm-darker/95 backdrop-blur-sm sticky top-0 z-50 border-b border-olive/20">
+  <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href={base} class="flex items-center gap-2 group">
+      <span class="text-2xl font-serif font-bold text-cream group-hover:text-terracotta-light transition-colors">
+        GLP-1 Recipes
+      </span>
+    </a>
+    <div class="hidden md:flex items-center gap-1">
+      {categories.map(cat => (
+        <a
+          href={`${base}category/${cat.slug}/`}
+          class="px-3 py-1.5 text-sm text-cream/80 hover:text-cream hover:bg-olive/30 rounded-md transition-all"
+        >
+          {cat.name}
+        </a>
+      ))}
+    </div>
+    <a href={`${base}about/`} class="text-sm text-cream/70 hover:text-cream transition-colors">
+      About
+    </a>
+  </nav>
+</header>
