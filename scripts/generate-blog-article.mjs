@@ -187,22 +187,29 @@ async function generateOne() {
   console.log(`  ${recipe.calories} cal | ${recipe.protein}g protein | ${recipe.fiber}g fiber`);
   console.log(`  Intro: ${recipe.introText.split('\n\n').length} paragraphs, ${recipe.introText.split(/\s+/).length} words`);
 
-  // Generate image
+  // Generate image with retries
   console.log('  Generating image...');
   let imageOk = false;
-  try {
-    await generateImage(recipe);
-    const imgPath = join(PROJECT_ROOT, 'public', recipe.image);
-    if (existsSync(imgPath)) {
-      imageOk = true;
-      console.log('  Image done.');
-    } else {
-      console.warn('  Image file not found after generation -- using placeholder.');
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      await generateImage(recipe);
+      const imgPath = join(PROJECT_ROOT, 'public', recipe.image);
+      if (existsSync(imgPath)) {
+        imageOk = true;
+        console.log('  Image done.');
+        break;
+      }
+      console.warn(`  Attempt ${attempt}: image file not found after generation.`);
+    } catch (err) {
+      console.warn(`  Attempt ${attempt}/3 failed: ${err.message}`);
     }
-  } catch (err) {
-    console.warn(`  Image failed: ${err.message} -- using placeholder.`);
+    if (attempt < 3) {
+      console.log(`  Retrying in 10 seconds...`);
+      await new Promise(r => setTimeout(r, 10000));
+    }
   }
   if (!imageOk) {
+    console.warn('  All image attempts failed -- using placeholder.');
     recipe.image = 'images/recipes/placeholder.webp';
     recipe.imageAlt = `${recipe.title} - image coming soon`;
   }
