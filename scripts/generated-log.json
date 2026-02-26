@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "title": "Greek Yogurt Protein Bowl with Berries",
+    "category": "breakfast",
+    "slug": "greek-yogurt-protein-bowl-with-berries",
+    "generatedAt": "2026-02-26T10:39:44.198Z"
+  },
+  {
+    "title": "Grilled Chicken Caesar Salad",
+    "category": "lunch",
+    "slug": "grilled-chicken-caesar-salad",
+    "generatedAt": "2026-02-26T10:40:04.966Z"
+  },
+  {
+    "title": "Herb-Crusted Baked Salmon",
+    "category": "dinner",
+    "slug": "herb-crusted-baked-salmon-with-lemon-quinoa-and-roasted-asparagus",
+    "generatedAt": "2026-02-26T10:40:25.606Z"
+  },
+  {
+    "title": "Turkey and Cheese Roll-Ups",
+    "category": "snacks",
+    "slug": "turkey-and-cheese-roll-ups",
+    "generatedAt": "2026-02-26T10:40:51.364Z"
+  },
+  {
+    "title": "Chicken and Vegetable Meal Prep Containers",
+    "category": "meal-prep",
+    "slug": "chicken-and-vegetable-meal-prep-containers",
+    "generatedAt": "2026-02-26T10:41:12.174Z"
+  }
+]

@@ -8,7 +8,7 @@ const PROJECT_ROOT = join(__dirname, '..');
 const IMAGES_DIR = join(PROJECT_ROOT, 'public', 'images', 'recipes');
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent';
 
 function buildPrompt(imagePrompt) {
   return `Generate a professional overhead food photography image: ${imagePrompt}. Style: bright natural lighting, clean white ceramic plate, rustic wooden table, shallow depth of field, fresh herb garnish, editorial food magazine quality, appetizing vibrant colors, no text or watermarks.`;
