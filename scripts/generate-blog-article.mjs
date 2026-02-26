@@ -214,7 +214,9 @@ async function generateOne() {
   console.log('  Committing and pushing...');
   try {
     const gitOpts = { cwd: PROJECT_ROOT, stdio: 'pipe' };
-    execSync(`git add "src/content/recipes/${slug}.md" "public/images/recipes/${slug}.webp" "public/images/recipes/${slug}-thumb.webp" "scripts/generated-log.json"`, gitOpts);
+    // Add files that exist (images may have failed)
+    execSync(`git add "src/content/recipes/${slug}.md" "scripts/generated-log.json"`, gitOpts);
+    try { execSync(`git add "public/images/recipes/${slug}.webp" "public/images/recipes/${slug}-thumb.webp"`, gitOpts); } catch {}
     execSync(`git commit -m "Add recipe: ${recipe.title}"`, gitOpts);
     execSync('git push', gitOpts);
     console.log('  Pushed to GitHub -- deploy will start automatically.');
