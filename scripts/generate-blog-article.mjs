@@ -231,7 +231,7 @@ const mode = process.argv[2];
 
 if (mode === '--schedule') {
   const INTERVAL_MS = 15 * 60 * 1000; // 15 minutes
-  const TOTAL = 8; // 2 hours / 15 min = 8
+  const TOTAL = parseInt(process.argv[3]) || 8;
 
   console.log(`=== Blog Article Scheduler ===`);
   console.log(`Generating ${TOTAL} articles, one every 15 minutes`);
