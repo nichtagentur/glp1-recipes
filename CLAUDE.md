@@ -1,0 +1,1 @@
+/home/student/Projects/CLAUDE.md
