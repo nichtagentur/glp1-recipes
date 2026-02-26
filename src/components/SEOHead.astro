@@ -11,7 +11,7 @@ const { title, description, image, url, type = 'website' } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const site = Astro.site?.toString().replace(/\/$/, '') || '';
 const canonicalURL = url || new URL(Astro.url.pathname, Astro.site).toString();
-const ogImage = image ? `${site}${base}${image}` : `${site}${base}images/og-default.webp`;
+const ogImage = image ? `${site}${base}/${image}` : `${site}${base}/images/og-default.webp`;
 const fullTitle = title.includes('GLP-1') ? title : `${title} | GLP-1 Recipes`;
 ---
 

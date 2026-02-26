@@ -28,7 +28,7 @@ const recipeSchema = {
   "@type": "Recipe",
   name: props.title,
   description: props.description,
-  image: `${site}${base}${props.image}`,
+  image: `${site}${base}/${props.image}`,
   author: {
     "@type": "Organization",
     name: "GLP-1 Recipes"
